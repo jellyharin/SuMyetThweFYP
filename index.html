@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Defines the character encoding used by the document. -->
+  <meta charset="UTF-8" />
+
+  <!-- Enables responsive scaling across different screen sizes. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sets the browser tab title for the prototype. -->
+  <title>Talk' Studio</title>
+
+  <!-- Loads the global stylesheet for the interface. -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="home-page theme-pink">
+  <!-- 
+    The home shell provides the full-screen background environment.
+    It contains the decorative glow effects, theme controls, and main landing card.
+  -->
+  <main class="home-shell">
+
+    <!-- 
+      Theme widget.
+      The colour options are hidden by default and expand when the palette button is selected.
+      This keeps customisation available while reducing visual clutter on the landing screen.
+    -->
+    <section class="theme-widget" aria-label="Interface colour customisation">
+      <div class="theme-colours" id="themeColours">
+        <button class="theme-dot pink active" data-theme="theme-pink" aria-label="Pink theme"></button>
+        <button class="theme-dot blue" data-theme="theme-blue" aria-label="Blue theme"></button>
+        <button class="theme-dot green" data-theme="theme-green" aria-label="Green theme"></button>
+        <button class="theme-dot yellow" data-theme="theme-yellow" aria-label="Yellow theme"></button>
+      </div>
+
+      <button class="palette-button" id="paletteButton" aria-label="Open colour palette">
+        <span class="paint-dot dot-1"></span>
+        <span class="paint-dot dot-2"></span>
+        <span class="paint-dot dot-3"></span>
+        <span class="paint-dot dot-4"></span>
+      </button>
+    </section>
+
+    <!-- 
+      Main landing card.
+      The card introduces Talk' Studio before users enter the guided tutorial and build workflow.
+    -->
+    <section class="home-card">
+
+      <!-- 
+        Image-based logo.
+        The logo is stored as an asset so the original handmade brand style is preserved.
+      -->
+      <img 
+        src="assets/talk-studio-logo.png" 
+        alt="Talk' Studio logo"
+        class="talk-logo"
+      />
+
+      <!-- 
+        Primary navigation action.
+        This sends the user to the explanation/tutorial page rather than directly into simulation.
+      -->
+      <a href="intro.html" class="build-button" id="buildButton">
+        Build Now
+      </a>
+
+    </section>
+  </main>
+
+  <!-- Controls colour theme behaviour. -->
+  <script src="js/theme.js"></script>
+
+  <!-- Controls home page navigation or landing-page-specific logic. -->
+  <script src="js/home.js"></script>
+</body>
+</html>

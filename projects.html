@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Defines the character encoding used by the document. -->
+  <meta charset="UTF-8" />
+
+  <!-- Enables responsive scaling across screen sizes. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sets the browser title for the project directory. -->
+  <title>Talk' Studio | Projects</title>
+
+  <!-- Loads the shared visual stylesheet. -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="projects-page theme-pink">
+  <!-- 
+    Project directory shell.
+    This page allows users to create or reopen prototype files.
+  -->
+  <main class="projects-shell">
+
+    <!-- 
+      Brand logo only.
+      No heading is used because the card layout already communicates
+      that this page is a project directory.
+    -->
+    <header class="projects-header-clean">
+      <img 
+        src="assets/talk-studio-mini-logo.png" 
+        alt="Talk' Studio"
+        class="projects-logo-clean"
+      />
+    </header>
+
+    <!-- 
+      Project grid.
+      JavaScript inserts the add-new card and saved project cards here.
+    -->
+    <section id="projectGrid" class="project-library-grid" aria-label="Prototype project library"></section>
+
+  </main>
+
+  <!-- Loads shared project storage functions. -->
+  <script src="js/app-state.js"></script>
+
+  <!-- Loads project directory behaviour. -->
+  <script src="js/projects.js"></script>
+</body>
+</html>

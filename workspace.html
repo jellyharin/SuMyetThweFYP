@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Defines the document character encoding. -->
+  <meta charset="UTF-8" />
+
+  <!-- Allows the interface to scale correctly across laptop and desktop screen sizes. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sets the browser tab title for the build workspace. -->
+  <title>Talk' Studio | Workspace</title>
+
+  <!-- Loads the shared stylesheet used by the Talk' Studio pages. -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--
+    Three.js import map.
+    This allows the workspace JavaScript file to import Three.js and OrbitControls
+    using short module names rather than long CDN paths.
+  -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://esm.sh/three@0.160.0",
+        "three/addons/": "https://esm.sh/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<body class="workspace-page theme-pink">
+  <!-- Main application workspace. -->
+  <main class="workspace-shell-clean">
+
+    <!--
+      Workspace header.
+      The back button returns to the project directory.
+      The compact logo keeps branding visible without taking space from the editor.
+    -->
+    <header class="workspace-header-clean">
+      <a href="projects.html" class="workspace-back-button" aria-label="Back to projects">↩</a>
+
+      <img
+        src="assets/talk-studio-mini-logo.png"
+        alt="Talk' Studio"
+        class="workspace-logo-clean"
+      />
+    </header>
+
+    <!--
+      Main two-column workspace layout.
+      The left side is the 3D build stage.
+      The right side is the draggable toolkit panel.
+    -->
+    <section class="workspace-main-grid">
+
+      <!-- Left-side 3D design stage. -->
+      <section class="workspace-stage" id="threeStage">
+
+        <!-- Empty message shown before the first object is added. -->
+        <div class="empty-hint-clean" id="emptyHint">
+          <span>☟</span>
+          <em>Drag and drop items here to start building.</em>
+        </div>
+
+        <!--
+          Quick edit panel.
+          This panel appears only when a 3D object is selected.
+        -->
+        <div class="quick-edit-panel" id="quickEditPanel">
+          <strong>Edit selected item</strong>
+
+          <label>
+            Width
+            <input type="range" id="scaleXControl" min="0.2" max="4" step="0.05" value="1" />
+          </label>
+
+          <label>
+            Height
+            <input type="range" id="scaleYControl" min="0.2" max="4" step="0.05" value="1" />
+          </label>
+
+          <label>
+            Thickness
+            <input type="range" id="scaleZControl" min="0.1" max="4" step="0.05" value="1" />
+          </label>
+
+          <label>
+            Rotate Left / Right
+            <input type="range" id="rotateYControl" min="-180" max="180" step="5" value="0" />
+          </label>
+
+          <label>
+            Tilt Forward / Back
+            <input type="range" id="rotateXControl" min="-180" max="180" step="5" value="0" />
+          </label>
+
+          <label>
+            Lean Sideways
+            <input type="range" id="rotateZControl" min="-180" max="180" step="5" value="0" />
+          </label>
+
+          <label>
+            Front / Back Layer
+            <input type="range" id="layerControl" min="-3" max="3" step="0.05" value="0" />
+          </label>
+
+          <button id="duplicateBtn" class="quick-duplicate">Duplicate item</button>
+          <button id="deleteSelectedBtn" class="quick-delete">Delete selected</button>
+          
+        </div>
+
+        <!-- Delete bin for the selected 3D object. -->
+        <button class="trash-zone" id="trashZone" aria-label="Delete selected item">
+          <span class="trash-lid"></span>
+          <span class="trash-can">🗑</span>
+        </button>
+
+        <!--
+          Bottom compact toolbar.
+          Labels expand on hover to keep the workspace clean.
+        -->
+        <nav class="workspace-dock compact-dock" aria-label="Workspace controls">
+          <button class="dock-tool" id="resetViewBtn" title="Reset View">
+            <span class="dock-icon">↺</span>
+            <b>Reset View</b>
+          </button>
+
+          <button class="dock-tool" id="zoomInBtn" title="Zoom In">
+            <span class="dock-icon">＋</span>
+            <b>Zoom In</b>
+          </button>
+
+          <button class="dock-tool" id="zoomOutBtn" title="Zoom Out">
+            <span class="dock-icon">−</span>
+            <b>Zoom Out</b>
+          </button>
+
+          <button class="dock-tool" id="viewRoomBtn" title="View Room">
+            <span class="dock-icon">⌗</span>
+            <b>View Room</b>
+          </button>
+
+          <button class="dock-tool" id="fullscreenBtn" title="Fullscreen">
+            <span class="dock-icon">⛶</span>
+            <b>Fullscreen</b>
+          </button>
+
+          <button class="dock-tool danger-dock-tool" id="clearBtn" title="Clear All">
+            <span class="dock-icon">×</span>
+            <b>Clear All</b>
+          </button>
+        </nav>
+      </section>
+
+      <!-- Right-side toolkit panel. -->
+      <aside class="workspace-side-panel">
+
+        <!-- Build/simulate mode selector. -->
+        <div class="workspace-mode-toggle">
+          <button class="workspace-mode-pill active" type="button">Build</button>
+          <button class="workspace-mode-pill muted" id="simulateBtn" type="button">Simulate</button>
+        </div>
+
+        <!-- Body shape tools. -->
+        <section class="workspace-panel-section open">
+          <button class="workspace-panel-title" type="button">
+            <span>Body parts</span>
+            <strong>▲</strong>
+          </button>
+
+          <div class="workspace-panel-content">
+            <div class="colour-row">
+              <button class="colour-dot active" style="background:#D95A00" data-colour="#D95A00" title="Orange" type="button"></button>
+              <button class="colour-dot" style="background:#8FE600" data-colour="#8FE600" title="Green" type="button"></button>
+              <button class="colour-dot" style="background:#F8872E" data-colour="#F8872E" title="Soft Orange" type="button"></button>
+              <button class="colour-dot" style="background:#FFCD36" data-colour="#FFCD36" title="Yellow" type="button"></button>
+              <button class="colour-dot" style="background:#7897DF" data-colour="#7897DF" title="Blue" type="button"></button>
+              <button class="colour-dot" style="background:#7B4CC2" data-colour="#7B4CC2" title="Purple" type="button"></button>
+              <button class="colour-dot" style="background:#E55CCB" data-colour="#E55CCB" title="Pink" type="button"></button>
+
+              <label class="colour-picker-dot" title="Custom colour">
+                🎨
+                <input type="color" id="customBodyColour" value="#D95A00" />
+              </label>
+            </div>
+
+            <div class="asset-grid">
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="sphere" title="Sphere" type="button">
+                <span class="preview sphere"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="box" title="Box" type="button">
+                <span class="preview box"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="cylinder" title="Cylinder" type="button">
+                <span class="preview cylinder"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="cone" title="Cone" type="button">
+                <span class="preview cone"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="capsule" title="Capsule" type="button">
+                <span class="preview capsule"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="torus" title="Ring" type="button">
+                <span class="preview torus"></span>
+              </button>
+
+              <button class="asset-card draggable-asset" draggable="true" data-kind="shape" data-type="doodle" title="Doodle Shape" type="button">
+                <span class="preview doodle-preview">〰</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Component tools. -->
+        <section class="workspace-panel-section">
+          <button class="workspace-panel-title" type="button">
+            <span>Components</span>
+            <strong>▼</strong>
+          </button>
+
+          <div class="workspace-panel-content">
+            <div class="component-colour-row">
+              <button class="component-colour-dot active" style="background:#7897DF" data-colour="#7897DF" title="Blue" type="button"></button>
+              <button class="component-colour-dot" style="background:#F46993" data-colour="#F46993" title="Pink" type="button"></button>
+              <button class="component-colour-dot" style="background:#FFCD36" data-colour="#FFCD36" title="Yellow" type="button"></button>
+              <button class="component-colour-dot" style="background:#C3E9B0" data-colour="#C3E9B0" title="Green" type="button"></button>
+              <button class="component-colour-dot" style="background:#7c1d09" data-colour="#7c1d09" title="Brown" type="button"></button>
+            </div>
+
+            <p class="mini-title">Microphone</p>
+            <div class="asset-grid">
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="mic" title="Microphone" type="button">
+                <span class="component-icon">🎙</span>
+              </button>
+            </div>
+
+            <p class="mini-title">LCD Screen</p>
+            <div class="asset-grid">
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="screen" title="LCD Screen" type="button">
+                <span class="lcd-preview"></span>
+              </button>
+            </div>
+
+            <p class="mini-title">Buttons</p>
+            <div class="asset-grid button-grid">
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="play" title="Play Button" type="button">▶</button>
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="pause" title="Pause Button" type="button">Ⅱ</button>
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="skip" title="Skip Button" type="button">▶▏</button>
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="rewind" title="Repeat Button" type="button">↺</button>
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="mute" title="Mute Button" type="button">🔈</button>
+              <button class="asset-card component-card draggable-asset" draggable="true" data-kind="component" data-type="delete" title="Delete Button" type="button">⌫</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Background tools. -->
+        <section class="workspace-panel-section">
+          <button class="workspace-panel-title" type="button">
+            <span>Background</span>
+            <strong>▼</strong>
+          </button>
+
+          <div class="workspace-panel-content">
+            <div class="background-grid">
+              <button class="background-tile active" data-bg="" title="No background" type="button">None</button>
+              <button class="background-tile" data-bg="assets/backgrounds/livingroom.png" title="Living Room" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/bedroom1.png" title="Bedroom 1" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/bedroom2.png" title="Bedroom 2" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/display1.png" title="Display 1" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/display2.png" title="Display 2" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/garden.png" title="Garden" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/desk1.png" title="Desk 1" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/desk2.png" title="Desk 2" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/office.png" title="Office" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/kitchen1.png" title="Kitchen 1" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/kitchen2.png" title="Kitchen 2" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/bathroom.png" title="Bathroom" type="button"></button>
+              <button class="background-tile" data-bg="assets/backgrounds/publicspace.png" title="Public Space" type="button"></button>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+    </section>
+  </main>
+
+  <!-- Loads shared project storage functions before the workspace module. -->
+  <script src="js/app-state.js"></script>
+
+  <!-- Loads the workspace build behaviour as an ES module because Three.js uses imports. -->
+  <script type="module" src="js/workspace.js"></script>
+</body>
+</html>

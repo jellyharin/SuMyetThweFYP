@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Defines the document character encoding. -->
+  <meta charset="UTF-8" />
+
+  <!-- Allows the simulation interface to scale correctly on different screens. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sets the browser tab title. -->
+  <title>Talk' Studio | Simulate</title>
+
+  <!-- Loads the shared Talk' Studio stylesheet. -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--
+    Three.js import map.
+    This allows simulate.js to import Three.js and OrbitControls using short module names.
+  -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://esm.sh/three@0.160.0",
+        "three/addons/": "https://esm.sh/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<body class="simulate-page theme-pink">
+  <!-- Main simulation shell. -->
+  <main class="simulate-shell-3d">
+
+    <!-- Header section containing the back button and brand logo. -->
+    <header class="simulate-header-3d">
+      <a href="workspace.html" class="workspace-back-button" aria-label="Back to workspace">↩</a>
+
+      <img
+        src="assets/talk-studio-mini-logo.png"
+        alt="Talk' Studio"
+        class="workspace-logo-clean"
+      />
+    </header>
+
+    <!-- Main simulation card. -->
+    <section class="simulate-stage-card">
+
+      <!--
+        Simulation layout.
+        The 3D model stays on the left.
+        The large LCD mirror stays on the right so it does not cover the model.
+      -->
+      <section class="simulate-content-layout">
+
+        <!-- Three.js renders the saved prototype inside this stage. -->
+        <section id="simulateStage" class="simulate-three-stage"></section>
+
+        <!--
+          Large readable LCD mirror.
+          This displays the same status, message, and transcript as the 3D LCD screen.
+        -->
+        <aside class="simulation-screen-panel">
+          <article class="simulate-status-panel compact-lcd-panel">
+            <p id="simulateStatus">READY</p>
+            <h1 id="simulateMainText">Click the microphone to record.</h1>
+            <p id="simulateTranscript"></p>
+          </article>
+        </aside>
+
+      </section>
+
+      <!-- Hidden audio player used for recorded journal playback. -->
+      <audio id="journalAudio"></audio>
+
+    </section>
+  </main>
+
+  <!-- Loads shared project storage helpers before the simulation controller. -->
+  <script src="js/app-state.js"></script>
+
+  <!-- Loads the simulation controller as a module because it imports Three.js. -->
+  <script type="module" src="js/simulate.js"></script>
+</body>
+</html>

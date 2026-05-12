@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Defines the character encoding used by the document. -->
+  <meta charset="UTF-8" />
+
+  <!-- Enables responsive scaling across different screen sizes. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Sets the browser tab title for the introduction page. -->
+  <title>Talk' Studio | Introduction</title>
+
+  <!-- Loads the shared stylesheet used across the prototype. -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="intro-page theme-pink">
+  <!-- 
+    The intro shell provides the full-page background and centres 
+    the explanation card within the viewport.
+  -->
+  <main class="intro-shell">
+
+    <!-- 
+      Theme widget keeps visual customisation consistent across pages.
+      The colour options remain hidden until the palette button is opened.
+    -->
+    <section class="theme-widget" aria-label="Interface colour customisation">
+      <div class="theme-colours" id="themeColours">
+        <button class="theme-dot pink active" data-theme="theme-pink" aria-label="Pink theme"></button>
+        <button class="theme-dot blue" data-theme="theme-blue" aria-label="Blue theme"></button>
+        <button class="theme-dot green" data-theme="theme-green" aria-label="Green theme"></button>
+        <button class="theme-dot yellow" data-theme="theme-yellow" aria-label="Yellow theme"></button>
+      </div>
+
+      <button class="palette-button" id="paletteButton" aria-label="Open colour palette">
+        <span class="paint-dot dot-1"></span>
+        <span class="paint-dot dot-2"></span>
+        <span class="paint-dot dot-3"></span>
+        <span class="paint-dot dot-4"></span>
+      </button>
+    </section>
+
+    <!-- 
+      Main introduction card.
+      This page explains the intended workflow before users enter the workspace.
+    -->
+    <section class="intro-card-clean">
+
+      <!-- 
+        Small logo maintains project identity without dominating the explanation page.
+      -->
+      <img 
+        src="assets/talk-studio-mini-logo.png" 
+        alt="Talk' Studio mini logo"
+        class="intro-clean-logo"
+      />
+
+      <!-- 
+        Four-card workflow summary.
+        Each card represents one stage of the prototype journey.
+      -->
+      <section class="intro-step-grid" aria-label="Talk Studio workflow steps">
+
+        <article class="intro-step-card">
+          <span class="step-number">01</span>
+          <h2>Build</h2>
+          <p>Create a digital product form using simple 3D shapes.</p>
+        </article>
+
+        <article class="intro-step-card">
+          <span class="step-number">02</span>
+          <h2>Add</h2>
+          <p>Place voice-journaling components such as buttons, microphone and screen.</p>
+        </article>
+
+        <article class="intro-step-card">
+          <span class="step-number">03</span>
+          <h2>Simulate</h2>
+          <p>Test the product digitally using interactive voice features.</p>
+        </article>
+
+        <article class="intro-step-card">
+          <span class="step-number">04</span>
+          <h2>Export</h2>
+          <p>Save the design and testing evidence for review or evaluation.</p>
+        </article>
+
+      </section>
+
+      <!-- 
+        Navigation controls.
+        Back returns to the welcome page; Start Building opens the workspace.
+      -->
+      <div class="intro-clean-actions">
+        <a href="index.html" class="secondary-button">Back</a>
+        <a href="projects.html" class="build-button intro-start-button">Continue</a>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Loads shared theme functionality. -->
+  <script src="js/theme.js"></script>
+</body>
+</html>
