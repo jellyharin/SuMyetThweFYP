@@ -1,0 +1,1770 @@
+/* =========================================================
+   TALK' STUDIO - COMPLETE SHARED STYLESHEET
+   ---------------------------------------------------------
+   This stylesheet defines the visual system for Talk' Studio.
+   It includes the landing page, intro page, project directory,
+   and the current interactive 3D workspace.
+   ========================================================= */
+
+
+/* =========================================================
+   1. DESIGN TOKENS
+   ---------------------------------------------------------
+   CSS variables provide reusable colours, shadows, borders,
+   and glass-style surfaces. The workspace JavaScript also
+   updates --active-body-colour so the shape previews match
+   the selected body colour.
+   ========================================================= */
+
+:root {
+  --bg-main: #fff3fb;
+  --bg-glow-1: rgba(244, 105, 147, 0.3);
+  --bg-glow-2: rgba(244, 105, 147, 0.17);
+
+  --accent: #f46993;
+  --accent-dark: #7c1d09;
+
+  --text-dark: #321014;
+  --soft-border: rgba(130, 60, 80, 0.16);
+
+  --card-glass: rgba(255, 255, 255, 0.42);
+  --panel-glass: rgba(255, 255, 255, 0.58);
+
+  --shadow-soft: 0 22px 55px rgba(100, 40, 70, 0.08);
+  --shadow-control: 0 8px 20px rgba(80, 35, 50, 0.18);
+
+  --active-body-colour: #d95a00;
+}
+
+
+/* =========================================================
+   2. THEME VARIATIONS
+   ---------------------------------------------------------
+   These classes change the interface atmosphere while keeping
+   the layout and component hierarchy consistent.
+   ========================================================= */
+
+body.theme-pink {
+  --bg-main: #fff3fb;
+  --bg-glow-1: rgba(244, 105, 147, 0.3);
+  --bg-glow-2: rgba(244, 105, 147, 0.17);
+  --accent: #f46993;
+}
+
+body.theme-blue {
+  --bg-main: #f2fbff;
+  --bg-glow-1: rgba(133, 190, 218, 0.33);
+  --bg-glow-2: rgba(133, 190, 218, 0.18);
+  --accent: #9ccce3;
+}
+
+body.theme-green {
+  --bg-main: #fbfff2;
+  --bg-glow-1: rgba(182, 224, 144, 0.35);
+  --bg-glow-2: rgba(182, 224, 144, 0.18);
+  --accent: #8daf72;
+}
+
+body.theme-yellow {
+  --bg-main: #fffbea;
+  --bg-glow-1: rgba(255, 213, 48, 0.35);
+  --bg-glow-2: rgba(255, 213, 48, 0.18);
+  --accent: #d8b300;
+}
+
+
+/* =========================================================
+   3. BASE RESET
+   ---------------------------------------------------------
+   This reset keeps spacing and element sizing predictable
+   across browsers.
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-dark);
+  background: var(--bg-main);
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+
+/* =========================================================
+   4. HOME PAGE
+   ---------------------------------------------------------
+   The landing page introduces the project through a glass card,
+   logo image, build button, and optional theme selector.
+   ========================================================= */
+
+.home-page {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.home-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 58px 72px;
+
+  background:
+    radial-gradient(circle at 4% 47%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 96% 50%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 16% 83%, var(--bg-glow-2) 0 8%, transparent 24%),
+    radial-gradient(circle at 84% 14%, var(--bg-glow-2) 0 8%, transparent 24%),
+    var(--bg-main);
+}
+
+.home-card {
+  width: min(1120px, 88vw);
+  min-height: 76vh;
+
+  margin: 26px auto 0;
+  padding: 76px 48px 64px;
+
+  border-radius: 28px;
+  border: 1px solid var(--soft-border);
+
+  background:
+    radial-gradient(circle at 11% 50%, var(--bg-glow-1) 0 7%, transparent 25%),
+    radial-gradient(circle at 88% 58%, var(--bg-glow-1) 0 9%, transparent 29%),
+    var(--card-glass);
+
+  box-shadow:
+    0 5px 0 rgba(120, 70, 80, 0.08),
+    var(--shadow-soft);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.talk-logo {
+  width: min(650px, 70vw);
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-top: -22px;
+}
+
+.build-button {
+  margin-top: 100px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 245px;
+  height: 78px;
+  padding: 0 36px;
+
+  border-radius: 18px;
+  background: var(--accent);
+  color: #ffffff;
+
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 8px 0 rgba(120, 60, 70, 0.14),
+    0 14px 22px rgba(120, 60, 70, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.build-button:hover {
+  transform: translateY(-5px) scale(1.03);
+  filter: brightness(1.03);
+
+  box-shadow:
+    0 10px 0 rgba(120, 60, 70, 0.12),
+    0 20px 30px rgba(120, 60, 70, 0.22);
+}
+
+.build-button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+
+/* =========================================================
+   5. THEME CUSTOMISATION WIDGET
+   ---------------------------------------------------------
+   The palette widget hides colour options until opened.
+   This keeps the interface visually clean.
+   ========================================================= */
+
+.theme-widget {
+  position: absolute;
+  top: 50px;
+  right: 64px;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-colours {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-control);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  transition:
+    max-width 0.35s ease,
+    opacity 0.25s ease,
+    padding 0.35s ease;
+}
+
+.theme-widget.open .theme-colours {
+  max-width: 240px;
+  opacity: 1;
+  padding: 8px 14px;
+}
+
+.theme-dot {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    outline 0.2s ease;
+}
+
+.theme-dot:hover {
+  transform: translateY(-3px) scale(1.08);
+}
+
+.theme-dot.active {
+  outline: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 2px rgba(70, 30, 40, 0.08);
+}
+
+.theme-dot.pink {
+  background: #f3bfd5;
+}
+
+.theme-dot.blue {
+  background: #9ccce3;
+}
+
+.theme-dot.green {
+  background: #c6e8ac;
+}
+
+.theme-dot.yellow {
+  background: #ffd23c;
+}
+
+.palette-button {
+  position: relative;
+
+  width: 54px;
+  height: 54px;
+
+  border: none;
+  border-radius: 50%;
+  background: #4d4d4d;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset -4px -5px 0 rgba(0, 0, 0, 0.18),
+    0 8px 16px rgba(60, 30, 45, 0.2);
+
+  transition: transform 0.2s ease;
+}
+
+.palette-button:hover {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+.paint-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.dot-1 {
+  top: 10px;
+  left: 16px;
+  background: #f6bdd4;
+}
+
+.dot-2 {
+  top: 7px;
+  left: 29px;
+  background: #bce8d6;
+}
+
+.dot-3 {
+  top: 20px;
+  left: 38px;
+  background: #ff8b67;
+}
+
+.dot-4 {
+  top: 23px;
+  left: 12px;
+  background: #d9d2ff;
+}
+
+
+/* =========================================================
+   6. INTRO PAGE
+   ---------------------------------------------------------
+   The intro page explains the workflow before entering the
+   workspace.
+   ========================================================= */
+
+.intro-page {
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.intro-shell {
+  min-height: 100vh;
+  padding: 58px 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at 4% 47%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 96% 50%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 16% 83%, var(--bg-glow-2) 0 8%, transparent 24%),
+    radial-gradient(circle at 84% 14%, var(--bg-glow-2) 0 8%, transparent 24%),
+    var(--bg-main);
+}
+
+.intro-card-clean {
+  width: min(1280px, 92vw);
+  min-height: 76vh;
+
+  padding: 58px 64px 50px;
+
+  border-radius: 28px;
+  border: 1px solid var(--soft-border);
+
+  background:
+    radial-gradient(circle at 11% 50%, var(--bg-glow-1) 0 7%, transparent 25%),
+    radial-gradient(circle at 88% 58%, var(--bg-glow-1) 0 9%, transparent 29%),
+    var(--card-glass);
+
+  box-shadow:
+    0 5px 0 rgba(120, 70, 80, 0.08),
+    var(--shadow-soft);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-clean-logo {
+  width: 170px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 52px;
+}
+
+.intro-step-grid {
+  width: min(1120px, 100%);
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 26px;
+
+  margin-bottom: 54px;
+}
+
+.intro-step-card {
+  min-height: 230px;
+  padding: 32px 30px;
+
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(130, 60, 80, 0.1);
+
+  box-shadow:
+    0 18px 38px rgba(80, 35, 50, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 52px;
+  height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 24px;
+
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.intro-step-card h2 {
+  margin: 0 0 14px;
+  color: var(--accent-dark);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.intro-step-card p {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.intro-clean-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 170px;
+  height: 70px;
+  padding: 0 34px;
+
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--accent-dark);
+
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 8px 0 rgba(120, 60, 70, 0.08),
+    0 14px 22px rgba(120, 60, 70, 0.1);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.secondary-button:hover {
+  transform: translateY(-4px);
+}
+
+.intro-start-button {
+  margin-top: 0;
+  min-width: 300px;
+}
+
+
+/* =========================================================
+   7. PROJECT DIRECTORY PAGE
+   ---------------------------------------------------------
+   The project directory presents saved project cards and a
+   new-project card.
+   ========================================================= */
+
+.projects-page {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.projects-shell {
+  min-height: 100vh;
+  padding: 48px 72px;
+
+  background:
+    radial-gradient(circle at 4% 47%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 96% 50%, var(--bg-glow-1) 0 8%, transparent 22%),
+    radial-gradient(circle at 16% 83%, var(--bg-glow-2) 0 8%, transparent 24%),
+    radial-gradient(circle at 84% 14%, var(--bg-glow-2) 0 8%, transparent 24%),
+    var(--bg-main);
+}
+
+.projects-header-clean {
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-logo-clean {
+  width: 128px;
+  height: auto;
+  object-fit: contain;
+}
+
+.project-library-grid {
+  width: min(1120px, 86vw);
+  min-height: 70vh;
+
+  margin: 20px auto 0;
+  padding: 62px 58px;
+
+  border-radius: 28px;
+  border: 1px solid var(--soft-border);
+
+  background:
+    radial-gradient(circle at 12% 52%, var(--bg-glow-1) 0 7%, transparent 25%),
+    radial-gradient(circle at 88% 56%, var(--bg-glow-1) 0 9%, transparent 29%),
+    var(--card-glass);
+
+  box-shadow:
+    0 5px 0 rgba(120, 70, 80, 0.08),
+    var(--shadow-soft);
+
+  display: grid;
+  grid-template-columns: repeat(4, 210px);
+  align-content: start;
+  justify-content: center;
+  gap: 42px;
+}
+
+.library-card {
+  position: relative;
+
+  width: 210px;
+  height: 310px;
+
+  border-radius: 20px;
+  border: 7px solid var(--accent-dark);
+
+  background: rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 18px 38px rgba(80, 35, 50, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.library-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 24px 46px rgba(80, 35, 50, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.add-library-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.library-add-icon {
+  width: 76px;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--accent-dark);
+  color: #ffffff;
+
+  font-size: 58px;
+  line-height: 1;
+}
+
+.saved-library-card {
+  overflow: hidden;
+}
+
+.project-open-area {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.library-preview {
+  width: 100%;
+  height: 68%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at 50% 45%, var(--bg-glow-1), transparent 46%),
+    rgba(255, 255, 255, 0.62);
+}
+
+.library-preview span {
+  font-size: 58px;
+}
+
+.library-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   PROJECT CARD TEXT
+   ---------------------------------------------------------
+   The text layer displays the generated project name and the
+   creation date inside each saved project card.
+   ========================================================= */
+
+.project-card-text {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 22px;
+  z-index: 6;
+
+  text-align: center;
+  color: var(--accent-dark);
+
+  pointer-events: none;
+}
+
+.project-card-text h2 {
+  margin: 0 0 8px;
+
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.project-card-text p {
+  margin: 0;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.project-delete-button {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  z-index: 10;
+
+  width: 64px;
+  height: 64px;
+
+  border: none;
+  border-radius: 0 16px 0 24px;
+
+  background: var(--accent-dark);
+  color: #ffffff;
+
+  font-size: 30px;
+  cursor: pointer;
+
+  box-shadow: -4px 6px 14px rgba(80, 35, 50, 0.18);
+}
+
+.project-delete-button:hover {
+  filter: brightness(1.15);
+}
+
+
+/* =========================================================
+   8. WORKSPACE PAGE STRUCTURE
+   ---------------------------------------------------------
+   The workspace is an application-like layout. It uses a
+   fixed viewport, a central 3D stage, and a right-side tool
+   panel.
+   ========================================================= */
+
+.workspace-page {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.workspace-shell-clean {
+  height: 100vh;
+  padding: 22px 36px 34px;
+
+  background:
+    radial-gradient(circle at 5% 48%, var(--bg-glow-1) 0 8%, transparent 25%),
+    radial-gradient(circle at 96% 54%, var(--bg-glow-1) 0 8%, transparent 25%),
+    radial-gradient(circle at 50% 86%, var(--bg-glow-2) 0 9%, transparent 30%),
+    var(--bg-main);
+}
+
+.workspace-header-clean {
+  height: 72px;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspace-back-button {
+  position: absolute;
+  left: 0;
+
+  color: var(--accent-dark);
+  text-decoration: none;
+
+  font-size: 58px;
+  font-weight: 900;
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+}
+
+.workspace-back-button:hover {
+  transform: translateX(-5px);
+}
+
+.workspace-logo-clean {
+  width: 112px;
+  height: auto;
+  object-fit: contain;
+}
+
+.workspace-main-grid {
+  width: min(1360px, 96vw);
+  height: calc(100vh - 112px);
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(720px, 1fr) 390px;
+
+  border-top: 1px solid rgba(80, 30, 40, 0.08);
+}
+
+
+/* =========================================================
+   9. WORKSPACE 3D STAGE
+   ---------------------------------------------------------
+   The stage holds the Three.js canvas and overlays such as
+   the empty-state message, edit panel, dock, and delete bin.
+   ========================================================= */
+
+.workspace-stage {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  border-left: 1px solid rgba(80, 30, 40, 0.07);
+  border-bottom: 1px solid rgba(80, 30, 40, 0.07);
+
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05)),
+    radial-gradient(circle at 45% 38%, var(--bg-glow-1), transparent 40%);
+}
+
+.workspace-stage canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.empty-hint-clean {
+  position: absolute;
+  top: 48%;
+  left: 21%;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  color: rgba(55, 45, 55, 0.42);
+  font-size: 20px;
+
+  pointer-events: none;
+}
+
+.empty-hint-clean span {
+  font-size: 34px;
+  transform: rotate(-12deg);
+}
+
+
+/* =========================================================
+   10. WORKSPACE SIDE PANEL
+   ---------------------------------------------------------
+   The toolkit panel contains accordions for body shapes,
+   components, and backgrounds.
+   ========================================================= */
+
+.workspace-side-panel {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 24px 32px 90px;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.1)),
+    radial-gradient(circle at 45% 28%, var(--bg-glow-1), transparent 42%);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-left: 1px solid rgba(255, 255, 255, 0.45);
+
+  box-shadow:
+    inset 1px 0 0 rgba(255, 255, 255, 0.4),
+    -12px 0 35px rgba(100, 40, 80, 0.08);
+}
+
+.workspace-mode-toggle {
+  width: 320px;
+  height: 54px;
+
+  margin: 0 auto 26px;
+  padding: 5px;
+
+  display: flex;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid rgba(124, 29, 9, 0.12);
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.workspace-mode-pill {
+  flex: 1;
+
+  border: none;
+  border-radius: 999px;
+
+  background: transparent;
+  color: rgba(124, 29, 9, 0.52);
+
+  font-size: 19px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.workspace-mode-pill.active {
+  background: var(--accent-dark);
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 15px rgba(80, 30, 35, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.workspace-mode-pill.muted {
+  opacity: 0.55;
+}
+
+.workspace-panel-section {
+  margin-bottom: 22px;
+}
+
+.workspace-panel-title {
+  width: 100%;
+  height: 72px;
+
+  border: none;
+  border-radius: 11px;
+
+  padding: 0 26px;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.64));
+
+  color: var(--accent-dark);
+
+  font-size: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 22px rgba(80, 30, 45, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.workspace-panel-content {
+  display: none;
+  padding: 18px 0 8px;
+}
+
+.workspace-panel-section.open .workspace-panel-content {
+  display: block;
+}
+
+
+/* =========================================================
+   11. COLOUR CONTROLS
+   ---------------------------------------------------------
+   Colour dots control the next object colour and can also
+   recolour the selected object.
+   ========================================================= */
+
+.colour-row,
+.component-colour-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 13px;
+
+  margin-bottom: 24px;
+}
+
+.colour-dot,
+.component-colour-dot {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 12px rgba(80, 30, 45, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+
+  transition:
+    transform 0.18s ease,
+    outline 0.18s ease;
+}
+
+.colour-dot:hover,
+.component-colour-dot:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+.colour-dot.active,
+.component-colour-dot.active {
+  outline: 4px solid rgba(255, 255, 255, 0.92);
+}
+
+.colour-picker-dot {
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 12px rgba(80, 30, 45, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.colour-picker-dot input {
+  display: none;
+}
+
+
+/* =========================================================
+   12. ASSET CARDS AND SHAPE PREVIEWS
+   ---------------------------------------------------------
+   Asset cards are draggable controls. Shape previews use
+   --active-body-colour so the preview updates when the user
+   selects a new body colour.
+   ========================================================= */
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+
+  margin-bottom: 24px;
+}
+
+.asset-card {
+  height: 82px;
+
+  border: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.66));
+
+  cursor: grab;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #7897df;
+  font-size: 35px;
+  font-weight: 900;
+
+  box-shadow:
+    0 11px 24px rgba(80, 30, 45, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.asset-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 30px rgba(80, 30, 45, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.asset-card:active {
+  cursor: grabbing;
+}
+
+.preview {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+.preview.sphere {
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 24%,
+      #ffffff 0 12%,
+      color-mix(in srgb, var(--active-body-colour), #ffffff 35%) 20%,
+      var(--active-body-colour) 58%,
+      color-mix(in srgb, var(--active-body-colour), #000000 35%) 100%
+    );
+}
+
+.preview.box {
+  width: 60px;
+  height: 40px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      color-mix(in srgb, var(--active-body-colour), #ffffff 25%) 18%,
+      var(--active-body-colour) 68%,
+      color-mix(in srgb, var(--active-body-colour), #000000 20%) 100%
+    );
+}
+
+.preview.cylinder {
+  width: 52px;
+  height: 58px;
+
+  border-radius: 50% / 14%;
+
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--active-body-colour), #000000 45%),
+      var(--active-body-colour),
+      color-mix(in srgb, var(--active-body-colour), #ffffff 25%),
+      var(--active-body-colour),
+      color-mix(in srgb, var(--active-body-colour), #000000 45%)
+    );
+}
+
+.preview.cone {
+  width: 0;
+  height: 0;
+
+  border-left: 32px solid transparent;
+  border-right: 32px solid transparent;
+  border-bottom: 58px solid var(--active-body-colour);
+}
+
+.preview.capsule {
+  width: 62px;
+  height: 36px;
+
+  border-radius: 999px;
+
+  background:
+    radial-gradient(circle at 28% 25%, #ffffff, transparent 23%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--active-body-colour), #ffffff 25%),
+      var(--active-body-colour) 62%,
+      color-mix(in srgb, var(--active-body-colour), #000000 22%)
+    );
+}
+
+.preview.torus {
+  width: 58px;
+  height: 58px;
+
+  border-radius: 50%;
+  border: 16px solid var(--active-body-colour);
+  background: transparent;
+}
+
+.doodle-preview {
+  font-size: 46px;
+  color: var(--active-body-colour);
+}
+
+
+/* =========================================================
+   13. COMPONENT AND BACKGROUND TOOL STYLES
+   ---------------------------------------------------------
+   Component controls are grouped by microphone, LCD screen,
+   and button controls. Background tiles display their image
+   through JavaScript using each data-bg value.
+   ========================================================= */
+
+.mini-title {
+  margin: 16px 0 10px;
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--accent-dark);
+
+  font-size: 16px;
+}
+
+.component-card {
+  height: 92px;
+}
+
+.component-icon {
+  font-size: 35px;
+}
+
+.lcd-preview {
+  width: 68px;
+  height: 40px;
+
+  border-radius: 8px;
+
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 226, 90, 0.38) 0 12%, transparent 48%),
+    linear-gradient(135deg, #3a2618, #17100e);
+
+  border: 5px solid #9e681b;
+
+  box-shadow:
+    inset 0 0 12px rgba(255, 226, 70, 0.25),
+    0 0 10px rgba(255, 226, 70, 0.12);
+}
+
+.button-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.background-tile {
+  height: 58px;
+
+  border: none;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.62));
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: var(--accent-dark);
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 18px rgba(80, 30, 45, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.background-tile[data-bg=""] {
+  background-image: none;
+}
+
+.background-tile.active {
+  outline: 4px solid rgba(255, 255, 255, 0.95);
+}
+
+
+/* =========================================================
+   14. QUICK EDIT PANEL
+   ---------------------------------------------------------
+   The quick edit panel exposes simple sliders for resizing,
+   rotating, layering, and deleting the selected 3D item.
+   ========================================================= */
+
+.quick-edit-panel {
+  position: absolute;
+  left: 30px;
+  bottom: 110px;
+  z-index: 30;
+
+  width: 230px;
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.76);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 18px 42px rgba(80, 30, 45, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+
+  display: none;
+}
+
+.quick-edit-panel.visible {
+  display: block;
+}
+
+.quick-edit-panel strong {
+  display: block;
+  margin-bottom: 14px;
+
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.quick-edit-panel label {
+  display: block;
+  margin-bottom: 10px;
+
+  color: var(--text-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quick-edit-panel input[type="range"] {
+  width: 100%;
+}
+
+.quick-delete {
+  width: 100%;
+  height: 38px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: rgba(244, 105, 147, 0.2);
+  color: var(--accent-dark);
+
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.quick-duplicate {
+  width: 100%;
+  height: 38px;
+  margin-bottom: 10px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--accent-dark);
+
+  font-weight: 900;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(80, 30, 45, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* =========================================================
+   15. WORKSPACE TOOL DOCK AND DELETE BIN
+   ---------------------------------------------------------
+   The dock provides camera and object-level actions. It is
+   compact by default and expands on hover.
+   ========================================================= */
+
+.workspace-dock {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 40;
+
+  height: 58px;
+  width: 430px;
+  padding: 0 24px;
+
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 12px 30px rgba(60, 35, 50, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+
+  overflow: hidden;
+
+  transition:
+    width 0.28s ease,
+    gap 0.28s ease;
+}
+
+.workspace-dock:hover {
+  width: 760px;
+  gap: 20px;
+}
+
+.dock-tool {
+  border: none;
+  background: transparent;
+  color: #151515;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dock-icon {
+  min-width: 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 23px;
+  line-height: 1;
+}
+
+.dock-tool b {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    max-width 0.24s ease,
+    opacity 0.18s ease;
+}
+
+.workspace-dock:hover .dock-tool b {
+  max-width: 95px;
+  opacity: 1;
+}
+
+.danger-dock-tool {
+  color: #8f1f14;
+}
+
+.trash-zone {
+  position: absolute;
+  right: 28px;
+  bottom: 34px;
+  z-index: 35;
+
+  width: 66px;
+  height: 66px;
+
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 30px rgba(80, 30, 45, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    border 0.2s ease;
+}
+
+.trash-lid {
+  position: absolute;
+  top: 17px;
+  left: 18px;
+
+  width: 30px;
+  height: 7px;
+
+  border-radius: 999px;
+  background: var(--accent-dark);
+
+  transform-origin: left center;
+
+  transition:
+    transform 0.22s ease,
+    top 0.22s ease,
+    left 0.22s ease;
+}
+
+.trash-can {
+  position: absolute;
+  top: 27px;
+  left: 24px;
+
+  color: #111111;
+  font-size: 28px;
+  line-height: 1;
+
+  transform: scaleX(0.92);
+
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease;
+}
+
+.trash-zone.delete-ready {
+  transform: scale(1.08);
+
+  background: rgba(255, 207, 217, 0.9);
+  border: 4px solid rgba(244, 105, 147, 0.42);
+
+  box-shadow:
+    0 18px 38px rgba(244, 105, 147, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.trash-zone.delete-ready .trash-lid {
+  top: 12px;
+  left: 15px;
+  transform: rotate(-28deg) translateY(-3px);
+}
+
+.trash-zone.delete-ready .trash-can {
+  transform: scaleX(0.72) translateY(3px);
+}
+
+
+/* =========================================================
+   16. RESPONSIVE RULES
+   ---------------------------------------------------------
+   These rules preserve usability when the viewport becomes
+   smaller. The current project is mainly laptop/desktop based.
+   ========================================================= */
+
+@media (max-width: 1080px) {
+  .intro-shell {
+    padding: 32px 18px;
+  }
+
+  .intro-card-clean {
+    width: 94vw;
+    min-height: auto;
+    padding: 46px 28px;
+  }
+
+  .intro-step-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .workspace-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-side-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-shell {
+    padding: 32px 18px;
+  }
+
+  .theme-widget {
+    top: 22px;
+    right: 22px;
+    transform: scale(0.86);
+    transform-origin: top right;
+  }
+
+  .home-card {
+    width: 94vw;
+    min-height: 74vh;
+    padding: 78px 24px 44px;
+  }
+
+  .talk-logo {
+    width: min(500px, 86vw);
+  }
+
+  .build-button {
+    min-width: 190px;
+    height: 62px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro-clean-logo {
+    margin-bottom: 34px;
+  }
+
+  .intro-step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-clean-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .secondary-button,
+  .intro-start-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   SIMULATION PAGE LAYOUT
+   ---------------------------------------------------------
+   This section positions the 3D prototype and the large LCD
+   mirror side by side. The large LCD no longer covers the
+   3D model, which keeps the simulation clearer and easier
+   to test.
+   ========================================================= */
+
+.simulate-page {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.simulate-shell-3d {
+  min-height: 100vh;
+  padding: 22px 36px 34px;
+
+  background:
+    radial-gradient(circle at 5% 48%, var(--bg-glow-1) 0 8%, transparent 25%),
+    radial-gradient(circle at 96% 54%, var(--bg-glow-1) 0 8%, transparent 25%),
+    radial-gradient(circle at 50% 86%, var(--bg-glow-2) 0 9%, transparent 30%),
+    var(--bg-main);
+}
+
+.simulate-header-3d {
+  height: 72px;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simulate-stage-card {
+  width: min(1360px, 96vw);
+  height: calc(100vh - 112px);
+
+  margin: 0 auto;
+
+  border-radius: 28px;
+  border: 1px solid var(--soft-border);
+
+  background:
+    radial-gradient(circle at 16% 55%, var(--bg-glow-1) 0 8%, transparent 28%),
+    radial-gradient(circle at 86% 44%, var(--bg-glow-2) 0 9%, transparent 30%),
+    rgba(255, 255, 255, 0.38);
+
+  box-shadow:
+    0 5px 0 rgba(120, 70, 80, 0.08),
+    var(--shadow-soft);
+
+  overflow: hidden;
+}
+
+.simulate-content-layout {
+  width: 100%;
+  height: 100%;
+  padding: 34px 44px;
+
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) 430px;
+  align-items: center;
+  gap: 34px;
+}
+
+.simulate-three-stage {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+    radial-gradient(circle at 50% 55%, var(--bg-glow-1), transparent 42%);
+}
+
+.simulate-three-stage canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.simulation-screen-panel {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.simulate-status-panel {
+  width: 100%;
+  min-height: 240px;
+
+  padding: 34px 30px;
+
+  border-radius: 22px;
+  border: 12px solid #43251c;
+
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 235, 80, 0.35), transparent 42%),
+    linear-gradient(145deg, #7a7718, #4e5010);
+
+  color: #fff7b8;
+  text-align: center;
+
+  box-shadow:
+    0 20px 42px rgba(80, 30, 45, 0.18),
+    inset 0 0 35px rgba(255, 230, 70, 0.18);
+}
+
+.simulate-status-panel p {
+  margin: 0;
+}
+
+.simulate-status-panel h1 {
+  margin: 16px 0 14px;
+
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+#simulateStatus {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+#simulateTranscript {
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+@media (max-width: 1100px) {
+  .simulate-page {
+    overflow-y: auto;
+  }
+
+  .simulate-stage-card {
+    height: auto;
+  }
+
+  .simulate-content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .simulate-three-stage {
+    height: 460px;
+  }
+
+  .simulate-status-panel {
+    max-width: 680px;
+  }
+}
